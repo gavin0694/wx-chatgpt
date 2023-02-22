@@ -37,7 +37,19 @@ const LIMIT_AI_IMAGE_COUNT = 5;
 const LIMIT_COUNT_RESPONSE = '对不起，因为ChatGPT调用收费，您的免费使用额度已用完~'
 
 const configuration = new Configuration({
-  apiKey: '##your api key##',
+  apiKey: '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',
+});
+// 一个用户发什么消息，就反弹什么消息的消息回复功能
+router.post('/message/post', async ctx => {
+  const { ToUserName, FromUserName, Content, CreateTime } = ctx.request.body;
+
+  ctx.body = {
+    ToUserName: FromUserName,
+    FromUserName: ToUserName,
+    CreateTime: +new Date(),
+    MsgType: 'text',
+    Content: `反弹你发的消息：${Content}`,
+  };
 });
 
 const openai = new OpenAIApi(configuration);
